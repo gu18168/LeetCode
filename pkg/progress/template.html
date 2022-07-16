@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>LeetCode Progress Report</title>
+    <style>body {
+        font: 14px system-ui, sans-serif;
+    }
+
+    h1, h2 {
+        text-align: center;
+    }
+
+    figure {
+        display: flex;
+        justify-content: center;
+    }
+
+    .detail {
+        border-collapse: collapse;
+    }
+
+    .detail > * > tr > * {
+        padding: 0.125em 0.25em;
+        text-align: left;
+    }
+
+    .detail > * > tr > *:nth-child(1) {
+        text-align: center;
+    }
+
+    .detail > * > tr > *:nth-child(2) {
+        text-align: right;
+    }
+
+    .detail > thead {
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .detail > tbody > tr:nth-child(odd) {
+        background: #eee;
+    }
+
+    .detail > tbody ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+
+    .not-done > td {
+        color: rgba(0, 0, 0, 0.382);
+    }
+
+    .not-done > td a:link {
+        color: rgba(0, 0, 255, 0.382);
+    }</style>
+</head>
+<body>
+<h1>LeetCode Progress Report</h1>
+<figure><img style="width: 50%" alt="Progress Chart" src="{{ .Chart }}"/></figure>
+<h2>Detail</h2>
+<figure>
+    <table class="detail">
+        <thead>
+        <tr>
+            <th>Done</th>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Difficulty</th>
+<!--            <th>Solutions</th>-->
+        </tr>
+        </thead>
+        <tbody>
+        {{ $solutions := .Solutions }}
+        {{ range .Problems }}
+            <tr>
+            {{ $id := .GetId }}
+            {{ with .Stat }}
+                <td>
+                    {{with (index $solutions $id)}}
+                        ✔
+                    {{end}}
+                </td>
+                <td>{{ .QuestionId }}</td>
+                <td><a href="https://leetcode.com/problems/{{ .TitleSlug }}">{{ .Title }}</a></td>
+            {{end}}
+            {{ with .Difficulty }}
+                <td>
+                {{ if (eq .Level 3) }}
+                    ★★★
+                {{ else if (eq .Level 2) }}
+                    ★★
+                {{ else if (eq .Level 1) }}
+                    ★
+                {{end}}
+                </td>
+            {{end}}
+            </tr>
+        {{end}}
+        </tbody>
+    </table>
+</figure>
+</body>
+
+</html>
