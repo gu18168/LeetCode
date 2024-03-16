@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -17,14 +17,15 @@ import (
 func getProblems() (progress.Problems, error) {
 	var result progress.Problems
 
-	resp, err := http.Get("https://leetcode.com/api/problems/algorithms/")
+	resp, err := http.Get("https://gist.githubusercontent.com/gu18168/759ad41f482eea97230734bf41f2e75e/raw/6b43fec420be4447f206af3d73db5dc64914d6ee/problemslist.json")
 	if err != nil {
 		fmt.Println(fmt.Errorf("fetch Problems failed: %v", err))
 		return result, err
 	}
 
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
+
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Println(fmt.Errorf("read Problems failed: %v", err))
 		return result, err
@@ -37,6 +38,7 @@ func getProblems() (progress.Problems, error) {
 	}
 
 	result.RetrainFree()
+
 	return result, nil
 }
 
